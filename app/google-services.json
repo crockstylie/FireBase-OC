@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "804377671968",
+    "project_id": "fir-oc-3bc62",
+    "storage_bucket": "fir-oc-3bc62.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804377671968:android:d7ddbdb2ae3bb475543f45",
+        "android_client_info": {
+          "package_name": "fr.antoinehory.firebaseoc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT1G26bALtQMs0cFoiTSL2-7IO3mX4skA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
