@@ -10,8 +10,7 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import fr.antoinehory.firebaseoc.databinding.ActivityMainBinding;
@@ -40,7 +39,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private void startSignInActivity() {
         // CHOOSE AUTHENT PROVIDERS
-        List<AuthUI.IdpConfig> providers = Collections.singletonList(new AuthUI.IdpConfig.EmailBuilder().build());
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.EmailBuilder().build()
+        );
 
         // LAUNCH THE ACTIVITY
         startActivityForResult(
