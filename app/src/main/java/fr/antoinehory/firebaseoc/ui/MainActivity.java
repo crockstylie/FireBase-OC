@@ -1,4 +1,4 @@
-package fr.antoinehory.firebaseoc;
+package fr.antoinehory.firebaseoc.ui;
 
 import androidx.annotation.Nullable;
 
@@ -13,11 +13,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.antoinehory.firebaseoc.R;
 import fr.antoinehory.firebaseoc.databinding.ActivityMainBinding;
+import fr.antoinehory.firebaseoc.manager.UserManager;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     public static final int RC_SIGN_IN = 123;
+    private UserManager userManager = UserManager.getInstance();
 
     @Override
     ActivityMainBinding getViewBinding() {
@@ -30,11 +33,34 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         setupListeners();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLoginButton();
+    }
+
+    private void updateLoginButton() {
+        if (userManager.isCurrentUserLogged()) {
+            binding.loginButton.setText((String) getString(R.string.button_login_text_logged));
+        } else {
+            binding.loginButton.setText((String) getString(R.string.button_login_text_not_logged));
+        }
+    }
+
     private void setupListeners() {
         // LOGIN BUTTON
         binding.loginButton.setOnClickListener(view -> {
-            startSignInActivity();
+            if (userManager.isCurrentUserLogged()) {
+                startProfileActivity();
+            } else {
+                startSignInActivity();
+            }
         });
+    }
+
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
     }
 
     private void startSignInActivity() {

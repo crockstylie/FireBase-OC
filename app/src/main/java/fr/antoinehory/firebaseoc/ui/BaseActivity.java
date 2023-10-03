@@ -1,4 +1,4 @@
-package fr.antoinehory.firebaseoc;
+package fr.antoinehory.firebaseoc.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -30,5 +30,4 @@ abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
     }
-
 }
