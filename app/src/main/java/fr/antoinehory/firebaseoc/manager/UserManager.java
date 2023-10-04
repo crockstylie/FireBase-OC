@@ -1,5 +1,9 @@
 package fr.antoinehory.firebaseoc.manager;
 
+import android.content.Context;
+
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
 import fr.antoinehory.firebaseoc.repository.UserRepository;
@@ -32,4 +36,13 @@ public class UserManager {
     public FirebaseUser getCurrentUser() {
         return UserRepository.getCurrentUser();
     }
+
+    public Task<Void> signOut(Context context) {
+        return UserRepository.signOut(context);
+    }
+
+    public Task<Void> deleteUser(Context context) {
+        return UserRepository.deleteUser(context);
+    }
+
 }
