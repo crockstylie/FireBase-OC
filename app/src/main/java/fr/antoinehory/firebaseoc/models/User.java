@@ -29,7 +29,7 @@ public class User {
         return username;
     }
 
-    public Boolean getMentor() {
+    public Boolean getIsMentor() {
         return isMentor;
     }
 
@@ -47,7 +47,7 @@ public class User {
         this.username = username;
     }
 
-    public void setMentor(Boolean mentor) {
+    public void setIsMentor(Boolean mentor) {
         isMentor = mentor;
     }
 

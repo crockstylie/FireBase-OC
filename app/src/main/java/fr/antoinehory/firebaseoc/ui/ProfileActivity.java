@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -32,7 +33,20 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     }
 
     private void setupListeners(){
-        binding.updateButton.setOnClickListener(view -> { });
+
+        // Mentor Checkbox
+        binding.isMentorCheckBox.setOnCheckedChangeListener((compoundButton, checked) -> {
+            userManager.updateIsMentor(checked);
+        });
+
+        // Update button
+        binding.updateButton.setOnClickListener(view -> {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            userManager.updateUsername(binding.usernameEditText.getText().toString())
+                    .addOnSuccessListener(aVoid -> {
+                        binding.progressBar.setVisibility(View.INVISIBLE);
+                    });
+        });
 
         // SIGN OUT BUTTON
         binding.signOutButton.setOnClickListener(view -> {
@@ -64,7 +78,17 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
                 setProfilePicture(user.getPhotoUrl());
             }
             setTextUserData(user);
+            getUserData();
         }
+    }
+
+    private void getUserData(){
+        userManager.getUserData().addOnSuccessListener(user -> {
+            // Set the data with the user information
+            String username = TextUtils.isEmpty(user.getUsername()) ? getString(R.string.info_no_username_found) : user.getUsername();
+            binding.isMentorCheckBox.setChecked(user.getIsMentor());
+            binding.usernameEditText.setText(username);
+        });
     }
 
     private void setProfilePicture(Uri profilePictureUrl){

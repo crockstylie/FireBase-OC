@@ -6,43 +6,106 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
+import fr.antoinehory.firebaseoc.models.User;
 import fr.antoinehory.firebaseoc.repository.UserRepository;
 
+/**
+ * this package is responsible of managing the FirebaseUser an play the role of middle man
+ * between UserRepository and the Activities
+ */
 public class UserManager {
     private static volatile UserManager instance;
-    private UserRepository userRepository;
+    private UserRepository mUserRepository;
 
-    private UserManager() {
-        userRepository = UserRepository.getInstance();
+    public UserManager(){
+        mUserRepository = UserRepository.getInstance();
     }
 
-    public static UserManager getInstance() {
-        UserManager result = instance;
-        if (result != null) {
-            return result;
+    /**
+     *  this methode will allows to a unique instance every time we call it .
+     * @return a unique instance of UserManager
+     */
+    public static UserManager getInstance(){
+        UserManager manager = instance;
+        if(manager != null){
+            return instance;
         }
-        synchronized(UserRepository.class) {
-            if (instance == null) {
+        synchronized (UserManager.class){
+            if(manager == null){
                 instance = new UserManager();
             }
             return instance;
         }
     }
 
-    public Boolean isCurrentUserLogged() {
-        return (UserRepository.getCurrentUser() != null);
+    /**
+     * get the current user if login
+     * @return FirebaseUser the current one
+     */
+    public FirebaseUser getCurrentUser(){
+        return mUserRepository.getCurrentUser();
     }
 
-    public FirebaseUser getCurrentUser() {
-        return UserRepository.getCurrentUser();
+    /**
+     * this method check if the user is logged in
+     * @return true if user logged in other wise false
+     */
+    public boolean isCurrentUserLogged(){
+        return (getCurrentUser() != null);
     }
 
-    public Task<Void> signOut(Context context) {
-        return UserRepository.signOut(context);
+    /**
+     * this method use user Repository to signOut
+     * @param context
+     * @return
+     */
+    public Task<Void> signOut(Context context){
+        return mUserRepository.signOut(context);
     }
 
-    public Task<Void> deleteUser(Context context) {
-        return UserRepository.deleteUser(context);
+    /**
+     * this method use user Repository to delete user .
+     * @param context
+     * @return
+     */
+    public Task<Void> deleteUser(Context context){
+        return mUserRepository.deleteUserFromFireStore()
+                .addOnSuccessListener(task ->{
+                    mUserRepository.deleteUser(context);
+                });
     }
 
+    /**
+     * this function use the user repository to fetch the  user from the task returned by user repository.
+     * @return task of type user.
+     */
+    public Task<User> getUserData(){
+        return mUserRepository.getUserData().continueWith(task ->
+                task.getResult().toObject(User.class)
+        );
+    }
+
+    /**
+     * update the username by using the user repository.
+     * @param username the new username.
+     * @return task of type viod.
+     */
+    public Task<Void> updateUsername(String username){
+        return mUserRepository.updateUsername(username);
+    }
+
+    /**
+     * update the boolean field is-mentor.
+     * @param isMentor whether if user is mentor or not.
+     */
+    public void updateIsMentor(Boolean isMentor){
+        mUserRepository.updateIsMentor(isMentor);
+    }
+
+    /**
+     * this method is responsible of creating a use in the firebase store.
+     */
+    public void createUser(){
+        mUserRepository.createUser();
+    }
 }
