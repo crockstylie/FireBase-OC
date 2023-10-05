@@ -51,5 +51,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
     // FIREBASE UI
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+    implementation("com.firebaseui:firebase-ui-firestore:7.2.0")
     implementation("com.google.firebase:firebase-firestore:24.8.1")
 }
