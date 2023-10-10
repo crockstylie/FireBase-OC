@@ -1,7 +1,10 @@
 package fr.antoinehory.firebaseoc.ui;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
@@ -28,6 +32,7 @@ public class MentorChatActivity extends BaseActivity<ActivityMentorChatBinding> 
 
     private MentorChatAdapter mentorChatAdapter;
     private String currentChatName;
+    private Uri uriImageSelected;
 
     private static final String CHAT_NAME_ANDROID = "android";
     private static final String CHAT_NAME_BUG = "bug";
@@ -124,12 +129,34 @@ public class MentorChatActivity extends BaseActivity<ActivityMentorChatBinding> 
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.handleResponse(requestCode, resultCode, data);
+    }
+
     @AfterPermissionGranted(RC_IMAGE_PERMS)
     private void addFile(){
         if (!EasyPermissions.hasPermissions(this, PERMS)) {
             EasyPermissions.requestPermissions(this, getString(R.string.popup_title_permission_files_access), RC_IMAGE_PERMS, PERMS);
             return;
         }
-        Toast.makeText(this, "Vous avez le droit d'accéder aux images !", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i, RC_CHOOSE_PHOTO);
+    }
+
+    // Handle activity response (after user has chosen or not a picture)
+    private void handleResponse(int requestCode, int resultCode, Intent data){
+        if (requestCode == RC_CHOOSE_PHOTO) {
+            if (resultCode == RESULT_OK) { //SUCCESS
+                this.uriImageSelected = data.getData();
+                Glide.with(this) //SHOWING PREVIEW OF IMAGE
+                        .load(this.uriImageSelected)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(binding.imagePreview);
+            } else {
+                Toast.makeText(this, getString(R.string.toast_title_no_image_chosen), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
