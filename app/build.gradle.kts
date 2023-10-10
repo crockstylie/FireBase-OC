@@ -53,4 +53,6 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     implementation("com.firebaseui:firebase-ui-firestore:7.2.0")
     implementation("com.google.firebase:firebase-firestore:24.8.1")
+    // EASY PERMISSIONS
+    implementation("pub.devrel:easypermissions:3.0.0")
 }
