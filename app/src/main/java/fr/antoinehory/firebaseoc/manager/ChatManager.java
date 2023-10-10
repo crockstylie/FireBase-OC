@@ -30,4 +30,7 @@ public class ChatManager {
         return chatRepository.getAllMessageForChat(chat);
     }
 
+    public void createMessageForChat(String message, String chat){
+        chatRepository.createMessageForChat(message, chat);
+    }
 }

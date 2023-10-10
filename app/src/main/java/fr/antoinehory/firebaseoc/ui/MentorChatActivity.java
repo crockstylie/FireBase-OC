@@ -1,6 +1,7 @@
 package fr.antoinehory.firebaseoc.ui;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -44,9 +45,19 @@ public class MentorChatActivity extends BaseActivity<ActivityMentorChatBinding> 
     private void setupListeners(){
 
         // Chat buttons
-        binding.androidChatButton.setOnClickListener(view -> { this.configureRecyclerView(CHAT_NAME_ANDROID); });
-        binding.firebaseChatButton.setOnClickListener(view -> { this.configureRecyclerView(CHAT_NAME_FIREBASE); });
-        binding.bugChatButton.setOnClickListener(view -> { this.configureRecyclerView(CHAT_NAME_BUG); });
+        binding.androidChatButton.setOnClickListener(view -> {
+            this.configureRecyclerView(CHAT_NAME_ANDROID);
+        });
+        binding.firebaseChatButton.setOnClickListener(view -> {
+            this.configureRecyclerView(CHAT_NAME_FIREBASE);
+        });
+        binding.bugChatButton.setOnClickListener(view -> {
+            this.configureRecyclerView(CHAT_NAME_BUG);
+        });
+        // Send button
+        binding.sendButton.setOnClickListener(view -> {
+            sendMessage();
+        });
     }
 
     // Configure RecyclerView
@@ -80,5 +91,17 @@ public class MentorChatActivity extends BaseActivity<ActivityMentorChatBinding> 
     public void onDataChanged() {
         // Show TextView in case RecyclerView is empty
         binding.emptyRecyclerView.setVisibility(this.mentorChatAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    private void sendMessage(){
+        // Check if user can send a message (Text not null + user logged)
+        boolean canSendMessage = !TextUtils.isEmpty(binding.chatEditText.getText()) && userManager.isCurrentUserLogged();
+
+        if (canSendMessage){
+            // Create a new message for the chat
+            chatManager.createMessageForChat(binding.chatEditText.getText().toString(), this.currentChatName);
+            // Reset text field
+            binding.chatEditText.setText("");
+        }
     }
 }
