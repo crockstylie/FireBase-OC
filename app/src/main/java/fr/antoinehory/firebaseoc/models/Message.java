@@ -10,9 +10,7 @@ public class Message {
     private User userSender;
     private String urlImage;
 
-    public Message() {
-
-    }
+    public Message() { }
 
     public Message(String message, User userSender) {
         this.message = message;

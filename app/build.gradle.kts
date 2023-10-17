@@ -55,4 +55,6 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.8.1")
     // EASY PERMISSIONS
     implementation("pub.devrel:easypermissions:3.0.0")
+    // FIREBASE STORAGE
+    implementation("com.firebaseui:firebase-ui-storage:7.1.1")
 }
