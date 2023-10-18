@@ -49,12 +49,12 @@ dependencies {
     // FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
+    implementation("com.firebaseui:firebase-ui-storage:7.1.1")
+    implementation("com.google.firebase:firebase-messaging")
     // FIREBASE UI
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     implementation("com.firebaseui:firebase-ui-firestore:7.2.0")
     implementation("com.google.firebase:firebase-firestore:24.8.1")
     // EASY PERMISSIONS
     implementation("pub.devrel:easypermissions:3.0.0")
-    // FIREBASE STORAGE
-    implementation("com.firebaseui:firebase-ui-storage:7.1.1")
 }
